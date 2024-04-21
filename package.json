@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "nodemon",
-    "build": "tsup src/index.ts --minify"
+    "build": "tsup src/index.ts --minify",
+    "deploy-commands": "tsx src/deploy-commands.ts"
   },
   "author": "123Gurkensalat",
   "license": "ISC",

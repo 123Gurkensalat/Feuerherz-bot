@@ -1,7 +1,9 @@
-import { Client } from "discord.js"
+import IClient from "../../ts/interfaces/IClient"
 
-module.exports = (client: Client<boolean>) => {
+function setActivity(client: IClient){
     client.user?.setActivity({
         name: 'AFK Journey'
     })
 }
+
+export default setActivity;

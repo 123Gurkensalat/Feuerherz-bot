@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder } from "discord.js";
 import ICommand from "../../ts/interfaces/ICommand";
 
 const ping: ICommand = {
@@ -6,9 +6,14 @@ const ping: ICommand = {
         .setName('ping')
         .setDescription('will answer pong (hopefully)'),
 
-    async execute(interaction){
-        await interaction.reply('Pong!')
-    }
-
+    async execute(interaction) {
+        await interaction.reply({
+            content: 'Pong!',
+            ephemeral: true
+        });
+    },
+    testOnly: false,
+    devOnly: false
 }
+
 export default ping;

@@ -1,6 +1,8 @@
-import { Client, ApplicationCommandManager, Snowflake } from "discord.js";
+import { Snowflake } from "discord.js";
+import IClient from "../ts/interfaces/IClient";
+import ICommand from "../ts/interfaces/ICommand";
 
-async function getApplicationCommands(client: Client<boolean>, guildId: Snowflake){
+async function getApplicationCommands(client: IClient, guildId: Snowflake): Promise<any>{
     if(!client.application) return;
     
     let applicationCommands;

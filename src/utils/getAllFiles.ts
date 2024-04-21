@@ -11,7 +11,6 @@ function getAllFiles(directory: string, foldersOnly = false){
 
         if (foldersOnly && file.isDirectory()) {
             fileNames.push(filePath);
-            
         }else if(file.isFile()){
             fileNames.push(filePath);
         }
