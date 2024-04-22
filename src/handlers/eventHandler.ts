@@ -1,6 +1,7 @@
 import path from "path";
 import getAllFiles from "../utils/getAllFiles";
-import IClient from "../ts/interfaces/IClient";
+import { IClient } from "../ts/interfaces/IClient";
+import { IEvent } from "../ts/interfaces/IEvent";
 
 function eventHandler(client: IClient){
     const eventFolders = getAllFiles(path.join(__dirname, '..', 'events'), true);
@@ -11,21 +12,20 @@ function eventHandler(client: IClient){
         // sort events by name ascending
         eventFiles.sort();
         
-        // unify dir names
-        const eventName = eventFolder.replace(/\\/g, '/').split('/').pop();
-
-        if(!eventName) continue;
-
-        client.on(eventName, async (arg) => {
-            for (const eventFile of eventFiles) {
-                try{
-                    // call Event function
-                    require(eventFile).default(client, arg);
-                }catch(e){
-                    console.log(`Error occured are file ${eventFile}: \n${e}`)
+        for (const eventFile of eventFiles){
+            try {
+                // get event object
+                const event: IEvent = require(eventFile).default;
+                // subscribe listener to event
+                if(event.once){
+                    client.once(event.name as string, (...args) => event.execute(...args, client));
+                }else{
+                    client.on(event.name as string, (...args) => event.execute(...args, client));
                 }
+            } catch (error) {
+                console.log(`Error occured at file ${eventFile}: \n${error}`)
             }
-        });
+        }
     }
 }; 
 

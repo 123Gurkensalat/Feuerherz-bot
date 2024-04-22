@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
 import { Client } from "discord.js";
 import eventHandler from "./handlers/eventHandler";
-import getApplicationCommands from "./utils/getApplicationCommands";
-import { Console } from "console";
-import IClient from "./ts/interfaces/IClient";
+import { IClient } from "./ts/interfaces/IClient";
 import commandsHandler from "./handlers/commandsHandler";
 
 dotenv.config();

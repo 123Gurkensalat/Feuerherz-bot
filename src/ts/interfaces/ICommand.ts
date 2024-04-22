@@ -1,12 +1,9 @@
 import { ChatInputCommandInteraction, PermissionResolvable, SlashCommandBuilder } from "discord.js";
 
-interface ICommand {
+export interface ICommand {
     data: SlashCommandBuilder,
-    execute: (interaction: ChatInputCommandInteraction) => Promise<void>,
+    execute: (interaction: ChatInputCommandInteraction) => Promise<void> | void,
     testOnly?: boolean,
     devOnly?: boolean,
-    permissionsRequired?: PermissionResolvable[],
     botPermissions?: PermissionResolvable[],
 }
-
-export default ICommand;

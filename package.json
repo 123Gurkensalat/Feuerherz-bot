@@ -7,7 +7,8 @@
     "dev": "tsx watch src/index.ts",
     "start": "nodemon",
     "build": "tsup src/index.ts --minify",
-    "deploy-commands": "tsx src/deploy-commands.ts"
+    "deploy-commands": "tsx src/deploy-commands.ts",
+    "delete-commands": "tsx src/delete-commands"
   },
   "author": "123Gurkensalat",
   "license": "ISC",

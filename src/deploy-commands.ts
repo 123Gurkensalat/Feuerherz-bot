@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import { REST, Routes, SlashCommandBuilder } from "discord.js";
 import path from "path";
 import getAllFiles from "./utils/getAllFiles";
-import ICommand from "./ts/interfaces/ICommand";
+import { ICommand } from "./ts/interfaces/ICommand";
 
 dotenv.config();
 

@@ -1,6 +1,12 @@
 import fs from "fs";
 import path from "path";
 
+/**
+ * 
+ * @param directory direct path
+ * @param foldersOnly 
+ * @returns All files/folders names in directory
+ */
 function getAllFiles(directory: string, foldersOnly = false){
     let fileNames: string[] = [];
 
