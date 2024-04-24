@@ -32,20 +32,6 @@ const commandCaller: IEvent = {
                 return;
             }
     
-            if (commandObject.botPermissions?.length) {
-                for (const permission of commandObject.botPermissions) {
-                    const bot = interaction.guild.members.me;
-    
-                    if (!bot?.permissions.has(permission)) {
-                        interaction.reply({
-                            content: "I don't have enough permissions.",
-                            ephemeral: true,
-                        });
-                        return;
-                    }
-                }
-            }
-    
             await commandObject.execute(interaction);
         } catch (error) {
             console.log(`There was an error running this command: ${error}`);

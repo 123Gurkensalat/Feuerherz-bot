@@ -14,9 +14,7 @@ const ping: ICommand = {
             content: `Pong! ${currentData.getTime() - interaction.createdTimestamp}ms`,
             ephemeral: true
         });
-    },
-    testOnly: true,
-    devOnly: true
+    }
 }
 
 export default ping;

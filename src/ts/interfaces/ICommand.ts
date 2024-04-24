@@ -4,6 +4,5 @@ export interface ICommand {
     data: SlashCommandBuilder,
     execute: (interaction: ChatInputCommandInteraction) => Promise<void> | void,
     testOnly?: boolean,
-    devOnly?: boolean,
-    botPermissions?: PermissionResolvable[],
+    devOnly?: boolean
 }

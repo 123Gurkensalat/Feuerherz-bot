@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Client } from "discord.js";
+import { Client, Partials } from "discord.js";
 import eventHandler from "./handlers/eventHandler";
 import { IClient } from "./ts/interfaces/IClient";
 import commandsHandler from "./handlers/commandsHandler";
@@ -18,7 +18,8 @@ const Guild = require('./models/guild').default(sequelize);
 const SelfRole = require('./models/selfRole').default(sequelize);
 
 const client = new Client({
-    intents: ['Guilds', 'GuildMembers', 'GuildMessages', 'MessageContent']
+    intents: ['Guilds', 'GuildMembers', 'GuildMessages', 'MessageContent', 'GuildMessageReactions'],
+    partials: [Partials.Message, Partials.Reaction]
 }) as IClient;
 
 // cache and subscribe
