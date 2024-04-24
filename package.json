@@ -8,13 +8,16 @@
     "start": "nodemon",
     "build": "tsup src/index.ts --minify",
     "deploy-commands": "tsx src/deploy-commands.ts",
-    "delete-commands": "tsx src/delete-commands"
+    "delete-commands": "tsx src/delete-commands",
+    "init-db": "tsx src/dbInit.ts"
   },
   "author": "123Gurkensalat",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

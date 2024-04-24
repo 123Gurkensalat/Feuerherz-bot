@@ -8,8 +8,10 @@ const ping: ICommand = {
     ,
 
     async execute(interaction) {
+        const currentData = new Date();
+    
         await interaction.reply({
-            content: 'Pong!',
+            content: `Pong! ${currentData.getTime() - interaction.createdTimestamp}ms`,
             ephemeral: true
         });
     },
