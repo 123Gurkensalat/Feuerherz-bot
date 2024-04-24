@@ -5,9 +5,9 @@ import { Guild } from "../../models/guild";
 const guildInit: ICommand = {
     data: new SlashCommandBuilder()
         .setName('init')
-        .setDescription('Will create a new server instance. This will be called on server enter')
+        .setDescription('Will create a new server instance. This will be called on server enter.')
         .setDescriptionLocalizations({
-            de: 'Erstellt eine neue Server Instanz. Dies wird ausgeführt sobald der Bot hinzugefügt wird'})
+            de: 'Erstellt eine neue Server Instanz. Dies wird automatisch ausgeführt sobald der Bot hinzugefügt wird'})
         .setDefaultMemberPermissions(
             PermissionFlagsBits.Administrator)
         .setDMPermission(false)

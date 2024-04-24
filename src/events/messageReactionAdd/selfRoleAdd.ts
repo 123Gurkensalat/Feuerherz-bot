@@ -3,8 +3,6 @@ import { IEvent } from "../../ts/interfaces/IEvent";
 import { Guild } from "../../models/guild";
 import { SelfRole } from "../../models/selfRole";
 
-let GuildSelfRoleChannel: any = {};
-
 const selfRoleAdd: IEvent = {
     name: Events.MessageReactionAdd,
     once: false,
@@ -20,28 +18,25 @@ const selfRoleAdd: IEvent = {
         }
 
         // get guild and channel from cache
-        const guildId = reaction.message.guildId || '';
-        let channelId = GuildSelfRoleChannel[guildId];
+        const guildId = reaction.message.guildId;
+        let channelId, enabled; 
 
         // get channel from db
-        if(!channelId){
-            try {
-                const res: any = await Guild()?.findOne({
-                    where: {
-                        id: guildId
-                    },
-                    attributes: ['self_role_channel']
-                });
-                channelId = res.self_role_channel;
-                GuildSelfRoleChannel[guildId] = channelId;
-            } catch (error) {
-                console.error(error);
-                return;
-            }
+        try {
+            const res: any = await Guild()?.findOne({
+                where: {
+                    id: guildId
+                }
+            });
+            channelId = res.self_role_channel;
+            enabled = res.self_role_enabled;
+        } catch (error) {
+            console.error(error);
+            return;
         }
 
         // only self_role_channel allowed
-        if(reaction.message.channelId !== channelId) return;
+        if(reaction.message.channelId !== channelId || !enabled) return;
 
         // get emoji
         const emoji = reaction.emoji.toString();
