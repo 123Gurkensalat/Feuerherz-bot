@@ -1,6 +1,6 @@
 import Dc, { Events } from "discord.js";
 import { IEvent } from "../../ts/interfaces/IEvent";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 
 const createGuildEntry: IEvent = {
     name: Events.GuildCreate,
@@ -8,8 +8,8 @@ const createGuildEntry: IEvent = {
         if(!guild.available) return;
         
         console.log('New Server joined');
-        Guild()?.create({
-            id: guild.id
+        Option()?.create({
+            server_id: guild.id
         }).catch(console.error);
     }
 }

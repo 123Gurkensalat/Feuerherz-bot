@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 import { SelfRole } from "../../models/selfRole";
 
 const view: ICommand = {
@@ -43,7 +43,7 @@ const view: ICommand = {
 
 async function viewGuild(interaction: ChatInputCommandInteraction){
     try {
-        const entry: any = await Guild()?.findOne({
+        const entry: any = await Option()?.findOne({
             where: {
                 id: interaction.guildId
             }

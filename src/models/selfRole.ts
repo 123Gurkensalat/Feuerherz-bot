@@ -6,7 +6,7 @@ function SelfRoleInit(sequelize: Sequelize.Sequelize){
     if(selfRole) return selfRole;
 
     selfRole = sequelize.define('self_role',{
-        guild: {
+        server_id: {
             type: Sequelize.STRING,
             primaryKey: true,
             allowNull: false
@@ -21,7 +21,7 @@ function SelfRoleInit(sequelize: Sequelize.Sequelize){
             primaryKey: true,
             allowNull: false
         }
-    })
+    }, {timestamps: false})
 
     return selfRole;
 }

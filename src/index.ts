@@ -3,7 +3,7 @@ import { Client, Partials } from "discord.js";
 import eventHandler from "./handlers/eventHandler";
 import { IClient } from "./ts/interfaces/IClient";
 import commandsHandler from "./handlers/commandsHandler";
-import { Sequelize } from "sequelize";
+import { Model, ModelCtor, Sequelize } from "sequelize";
 
 dotenv.config();
 
@@ -14,8 +14,11 @@ const sequelize = new Sequelize({
 });
 
 // load neccessary tables
-const Guild = require('./models/guild').default(sequelize);
-const SelfRole = require('./models/selfRole').default(sequelize);
+const Guild = require('./models/guild').default(sequelize) as ModelCtor<Model<any, any>>;
+const Lore = require('./models/lore').default(sequelize) as ModelCtor<Model<any, any>>;
+const Member = require('./models/member').default(sequelize) as ModelCtor<Model<any, any>>;
+const Options = require('./models/options').default(sequelize) as ModelCtor<Model<any, any>>;
+const SelfRole = require('./models/selfRole').default(sequelize) as ModelCtor<Model<any, any>>;
 
 const client = new Client({
     intents: ['Guilds', 'GuildMembers', 'GuildMessages', 'MessageContent', 'GuildMessageReactions'],

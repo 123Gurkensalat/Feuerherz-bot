@@ -1,6 +1,6 @@
 import { DiscordAPIError, Events, MessageReaction, User } from "discord.js";
 import { IEvent } from "../../ts/interfaces/IEvent";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 import { SelfRole } from "../../models/selfRole";
 
 const selfRoleAdd: IEvent = {
@@ -23,9 +23,9 @@ const selfRoleAdd: IEvent = {
 
         // get channel from db
         try {
-            const res: any = await Guild()?.findOne({
+            const res: any = await Option()?.findOne({
                 where: {
-                    id: guildId
+                    server_id: guildId
                 }
             });
             channelId = res.self_role_channel;

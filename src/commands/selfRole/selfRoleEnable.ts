@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 
 const selfRoleEnable: ICommand = {
     data: new SlashCommandBuilder()
@@ -23,11 +23,11 @@ const selfRoleEnable: ICommand = {
         const enable = interaction.options.getBoolean('enable');
 
         try {
-            const test = await Guild()?.update({
+            const test = await Option()?.update({
                 self_role_enabled: enable
             },{
                 where: {
-                    id: guildId
+                    server_id: guildId
                 }
             })
             

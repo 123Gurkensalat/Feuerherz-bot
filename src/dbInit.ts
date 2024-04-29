@@ -9,6 +9,9 @@ const sequelize = new Sequelize.Sequelize({
 
 // load neccessary tables
 const Guild = require('./models/guild').default(sequelize) as Sequelize.ModelCtor<Model<any, any>>;
+const lore = require('./models/lore').default(sequelize) as Sequelize.ModelCtor<Model<any, any>>;
+const member = require('./models/member').default(sequelize) as Sequelize.ModelCtor<Model<any, any>>;
+const options = require('./models/options').default(sequelize) as Sequelize.ModelCtor<Model<any, any>>;
 const SelfRole = require('./models/selfRole').default(sequelize) as Sequelize.ModelCtor<Model<any, any>>;
 
 // set associations

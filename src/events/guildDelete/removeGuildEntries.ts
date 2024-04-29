@@ -1,15 +1,15 @@
 import Dc, { Events } from "discord.js";
 import { IEvent } from "../../ts/interfaces/IEvent";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 
 const removeGuildEntries: IEvent = {
     name: Events.GuildDelete,
     execute(guild: Dc.Guild){
         if(!guild.available) return;
 
-        Guild()?.destroy({
+        Option()?.destroy({
             where: {
-                id: guild.id
+                server_id: guild.id
             }
         }).catch(console.error);
     }

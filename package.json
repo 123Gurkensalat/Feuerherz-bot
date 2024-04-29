@@ -14,8 +14,10 @@
   "author": "123Gurkensalat",
   "license": "ISC",
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.52",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
+    "ocr-space-api-wrapper": "^2.3.0",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7"
   },

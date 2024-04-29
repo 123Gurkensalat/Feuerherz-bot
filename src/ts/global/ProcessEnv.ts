@@ -6,6 +6,7 @@ declare global {
             TOKEN: string
             GUILD_ID: Snowflake
             CLIENT_ID: Snowflake
+            OCR_API_KEY: string
         }
     }
 }

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 
 const guildInit: ICommand = {
     data: new SlashCommandBuilder()
@@ -16,7 +16,7 @@ const guildInit: ICommand = {
         const guildId = interaction.guildId;
 
         try {
-            await Guild()?.create({
+            await Option()?.create({
                 id: guildId
             })
 
@@ -24,7 +24,6 @@ const guildInit: ICommand = {
                 content: 'New server instance created',
                 ephemeral: true
             })
-            
         } catch (error) {
             console.error(error);
 

@@ -6,19 +6,22 @@ function GuildInit(sequelize: Sequelize.Sequelize){
     if(guild) return guild;
 
     guild = sequelize.define('guild',{
-        id: {
+        server_id: {
             type: Sequelize.STRING,
             primaryKey: true,
             allowNull: false
         },
-        self_role_channel: {
-            type: Sequelize.STRING
+        id: {
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV1,
+            unique: true
         },
-        self_role_enabled: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
+        name: {
+            type: Sequelize.STRING,
+            primaryKey: true,
+            allowNull: false
         }
-    })
+    }, {underscored: true});
 
     return guild;
 }

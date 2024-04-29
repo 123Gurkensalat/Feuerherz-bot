@@ -1,6 +1,6 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
-import { Guild } from "../../models/guild";
+import { Option } from "../../models/options";
 
 const selfRoleChannel: ICommand = {
     data: new SlashCommandBuilder()
@@ -28,11 +28,11 @@ const selfRoleChannel: ICommand = {
         const guildId = interaction.guildId;
 
         try {
-            await Guild()?.update({
+            await Option()?.update({
                 self_role_channel: channel?.id
             },{
                 where: {
-                    id: guildId
+                    server_id: guildId
                 }
             })
 
