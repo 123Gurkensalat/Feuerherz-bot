@@ -19,7 +19,8 @@ function LoreInit(sequelize: Sequelize.Sequelize){
         text: {
             type: Sequelize.TEXT,
             allowNull: false
-        }
+        },
+        search: Sequelize.STRING
     }, {underscored: true});
 
     return lore;

@@ -4,7 +4,7 @@ import { Guild } from "../../models/guild";
 import { Member } from "../../models/member";
 import { GuildInfo } from "../../models/guildInfo";
 
-const guildCreate: ICommand = {
+const guildDelete: ICommand = {
     data: new SlashCommandBuilder()
         .setName('guild-delete')
         .setDescription('Deletes a guild')
@@ -69,4 +69,4 @@ const guildCreate: ICommand = {
     }
 }
 
-export default guildCreate;
+export default guildDelete;

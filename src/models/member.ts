@@ -10,6 +10,10 @@ function MemberInit(sequelize: Sequelize.Sequelize){
             type: Sequelize.STRING,
             allowNull: false
         },
+        id: {
+            type:Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV1
+        },
         guild_id: Sequelize.UUID,
         name: {
             type: Sequelize.STRING,

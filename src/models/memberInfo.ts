@@ -6,8 +6,8 @@ function MemberInfoInit(sequelize: Sequelize.Sequelize){
     if(memberInfo) return memberInfo;
 
     memberInfo = sequelize.define('member_info',{
-        name: {
-            type: Sequelize.STRING,
+        member_id: {
+            type: Sequelize.UUID,
             allowNull: false
         },
         power: {

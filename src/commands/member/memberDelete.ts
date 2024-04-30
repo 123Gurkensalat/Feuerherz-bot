@@ -1,11 +1,12 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
 import { Member } from "../../models/member";
+import { MemberInfo } from "../../models/memberInfo";
 
-const memberAdd: ICommand = {
+const memberDelete: ICommand = {
     data: new SlashCommandBuilder()
-        .setName('member-add')
-        .setDescription('Creates a new db-entry')
+        .setName('member-delete')
+        .setDescription('Deletes member')
         .addStringOption(option => option
             .setName('name')
             .setDescription('Name of the member')
@@ -13,7 +14,7 @@ const memberAdd: ICommand = {
                 de: 'Name des Spielers'})
             .setRequired(true))
         .setDescriptionLocalizations({
-            de: 'Erstellt ein neuen Spieler eintrag'})
+            de: 'Löscht den Spieler'})
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDMPermission(false)
     ,
@@ -22,10 +23,32 @@ const memberAdd: ICommand = {
         const name = interaction.options.getString('name');
 
         try {
-            await Member()?.create({
-                server_id: interaction.guildId,
-                name: name
+            const id = (await Member()?.findOne({
+                where: {
+                    name: name,
+                    server_id: interaction.guildId
+                }
+            }) as any)?.id
+
+            if(!id){
+                interaction.reply({
+                    content: 'No such member',
+                    ephemeral: true
+                })
+                return;
+            }
+        
+            await Member()?.destroy({
+                where: {
+                    id: id
+                }
             });
+
+            await MemberInfo()?.destroy({
+                where: {
+                    member_id: id
+                }
+            })
 
             interaction.reply({
                 content: `Successfully added ${name}`,
@@ -35,11 +58,11 @@ const memberAdd: ICommand = {
             console.error(error);
 
             interaction.reply({
-                content: 'Could not add a new member :(',
+                content: 'Could not delete member :(',
                 ephemeral: true
             })
         }
     }
 }
 
-export default memberAdd;
+export default memberDelete;

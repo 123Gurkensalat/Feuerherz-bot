@@ -177,7 +177,8 @@ const guildAddEntry: ICommand = {
                 where: {
                     name: {
                         [Op.in]: foundNames
-                    }
+                    },
+                    server_id: interaction.guildId
                 }
             })
 
