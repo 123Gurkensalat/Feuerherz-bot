@@ -17,7 +17,7 @@ const guildInit: ICommand = {
 
         try {
             await Option()?.create({
-                id: guildId
+                server_id: guildId
             })
 
             interaction.reply({

@@ -20,9 +20,18 @@ const guildAddEntry: ICommand = {
             .setDescription('Target guild')
             .setAutocomplete(true)
             .setDescriptionLocalizations({
-                de: 'Zielgilde'}))
+                de: 'Zielgilde'})
+            .setRequired(true))
         .addAttachmentOption(option => AttachmentOption(option, '1').setRequired(true))
         .addAttachmentOption(option => AttachmentOption(option, '2'))
+        .addAttachmentOption(option => AttachmentOption(option, '3'))
+        .addAttachmentOption(option => AttachmentOption(option, '4'))
+        .addAttachmentOption(option => AttachmentOption(option, '5'))
+        .addAttachmentOption(option => AttachmentOption(option, '6'))
+        .addAttachmentOption(option => AttachmentOption(option, '7'))
+        .addAttachmentOption(option => AttachmentOption(option, '8'))
+        .addAttachmentOption(option => AttachmentOption(option, '9'))
+        .addAttachmentOption(option => AttachmentOption(option, '10'))
         .setDescriptionLocalizations({
             de: 'Fügt einen Eintrag für die Berechnung von statistischen Werten hinzu.'})
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
@@ -39,7 +48,8 @@ const guildAddEntry: ICommand = {
                 where: {
                     server_id: interaction.guildId,
                     name: guild
-                }
+                },
+                attributes: ['id']
             }) as any)?.id;       
             if(!guild){
                 interaction.editReply('Could not find Guild');
@@ -47,13 +57,13 @@ const guildAddEntry: ICommand = {
             }
         } catch (error) {
             console.log(error);
-            interaction.editReply('Could not find Guild');
+            interaction.editReply('Internal server error');
             return;
         }
 
         // get attachments
         const texts: string[] = [];
-        for (let i = 0; i < 5; i++){
+        for (let i = 0; i < 10; i++){
             const attachment = interaction.options.getAttachment(`image${i + 1}`);
             if(!attachment) continue;
             if(!attachment.width || !attachment.height) continue;
@@ -72,12 +82,6 @@ const guildAddEntry: ICommand = {
                 // get image as Base64Image
                 const pngFile = canvas.toDataURL("image/png");
 
-                // const img = new AttachmentBuilder(await canvas.encode('png'), { name: 'compressed-image.png' });
-                // interaction.editReply({
-                //     content: 'Image',
-                //     files: [img]
-                // })
-                
                 // https://ocr.space/OCRAPI
                 // https://www.npmjs.com/package/ocr-space-api-wrapper?activeTab=code
                 // convert Image to Text
@@ -97,7 +101,8 @@ const guildAddEntry: ICommand = {
         }
 
         const members: {
-            name: string, 
+            id: string | null, 
+            name: string,
             power: number
         }[] = [];
         try {
@@ -105,7 +110,8 @@ const guildAddEntry: ICommand = {
             const memberNames = (await Member()?.findAll({
                 where: {
                     server_id: interaction.guildId
-                }
+                },
+                attributes: ['name']
             }))?.map((el: any) => el.name)
             
             if(!memberNames){
@@ -116,16 +122,21 @@ const guildAddEntry: ICommand = {
             // search for Member
             // save results in members object
             const text = texts.join('\n');
-            const memberRegEx = new RegExp(`(${memberNames.join('|')})\n\d+k+`, 'gi'); // Form: <Name>\nXXXXk
-        
+            const memberRegEx = new RegExp(`(${memberNames.join('|')})\n.*(\\d|,)+k+`, 'gi'); // Form: <Name>\nXXXXk
+            console.log(text);
             text.match(memberRegEx)?.forEach(element => {
-                const [name, power] = element.split('\n');
+                let [name, power]: string[] | undefined[] = element.split('\n');
+                power = power.match(/(\d|,)+k+/gi)?.at(0);
+                if(!power) {
+                    console.log('Cannot extract power')
+                    throw new Error('error');
+                }
                 members.push({
+                    id: null,
                     name: name,
                     power: PowerToInt(power)
                 });
             });
-            console.log(members);
     
             if(!members.length){
                 interaction.editReply('No members found');
@@ -169,21 +180,37 @@ const guildAddEntry: ICommand = {
                 adjusted_total
             })
 
-            // update guild 
-            const foundNames = members.map(el => el.name)
+            // get member ids
+            const membersDB: any = await Member()?.findAll({
+                where: {
+                    name: {
+                        [Op.in]: members.map((el: any) => el.name)
+                    },
+                    server_id: interaction.guildId 
+                },
+                attributes: ['id', 'name']
+            })
+
+            // update guild
             await Member()?.update({
                 guild_id: guildId
             },{
                 where: {
-                    name: {
-                        [Op.in]: foundNames
-                    },
-                    server_id: interaction.guildId
+                    id: {
+                        [Op.in]: membersDB?.map((el:any) => el.id)
+                    }
                 }
             })
 
+            // set ids
+            for (let i = 0; i < members.length; i++){
+                members[i].id = membersDB?.find((e: any) => e.name === members[i].name)?.id
+            }
+
             // save member infos
-            await MemberInfo()?.bulkCreate(members);
+            await MemberInfo()?.bulkCreate(members.map((el: any) => {
+                return {member_id: el.id, power: el.power}
+            }));
 
             interaction.editReply('Successfully created new entry');
         } catch (error) {

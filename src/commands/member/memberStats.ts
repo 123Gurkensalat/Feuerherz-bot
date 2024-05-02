@@ -4,6 +4,7 @@ import { Member } from "../../models/member";
 import { MemberInfo } from "../../models/memberInfo";
 import { Guild } from "../../models/guild";
 import ExtractName from "../../utils/extractName";
+import { IntToPower } from "../../utils/powerConversions";
 
 const memberStats: ICommand = {
     data: new SlashCommandBuilder()
@@ -76,7 +77,7 @@ const memberStats: ICommand = {
             }) as any)?.name
 
             // get all entries with name
-            const infos: any = MemberInfo()?.findAll({
+            const infos: any = await MemberInfo()?.findAll({
                 where: {
                     member_id: member.id
                 },
@@ -93,14 +94,14 @@ const memberStats: ICommand = {
                 return;
             }
 
-            let requestedPower: string = infos[0].power
+            let requestedPower: string = IntToPower(infos[0].power);
             if(days){
                 // predict
             }
 
             // responde
             interaction.reply({
-                content: `${name} ${guildName? `in der Gilde ${guildName}` : ''}:${days? `\nWird in ${days} Tagen ${requestedPower} haben`: requestedPower}`,
+                content: `${name} ${guildName? `in der Gilde ${guildName}` : ''}: ${days? `\nWird in ${days} Tagen ${requestedPower} haben`: requestedPower}`,
                 ephemeral: true
             })
         } catch (error) {

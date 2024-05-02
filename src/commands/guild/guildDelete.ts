@@ -16,8 +16,8 @@ const guildDelete: ICommand = {
             .setRequired(true))
         .setDescriptionLocalizations({
             de: 'Löscht eine Gilde'})
-        .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+        .setDMPermission(false)
     ,
 
     async execute(interaction) {
@@ -25,7 +25,7 @@ const guildDelete: ICommand = {
 
         try {
             const where = { name: name, server_id: interaction.guildId }
-            const id = (await Guild()?.findOne({ where }) as any)?.id;
+            const id = (await Guild()?.findOne({ where, attributes: ['id'] }) as any)?.id;
 
             if(!id){
                 interaction.reply({

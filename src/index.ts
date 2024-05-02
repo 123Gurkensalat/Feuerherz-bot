@@ -4,6 +4,7 @@ import eventHandler from "./handlers/eventHandler";
 import { IClient } from "./ts/interfaces/IClient";
 import commandsHandler from "./handlers/commandsHandler";
 import { Model, ModelCtor, Sequelize } from "sequelize";
+import modalSubmitHandler from "./handlers/modalSubmitHandler";
 
 dotenv.config();
 
@@ -15,8 +16,10 @@ const sequelize = new Sequelize({
 
 // load neccessary tables
 const Guild = require('./models/guild').default(sequelize) as ModelCtor<Model<any, any>>;
+const GuildInfo = require('./models/guildInfo').default(sequelize) as ModelCtor<Model<any, any>>;
 const Lore = require('./models/lore').default(sequelize) as ModelCtor<Model<any, any>>;
 const Member = require('./models/member').default(sequelize) as ModelCtor<Model<any, any>>;
+const MemberInfo = require('./models/memberInfo').default(sequelize) as ModelCtor<Model<any, any>>;
 const Options = require('./models/options').default(sequelize) as ModelCtor<Model<any, any>>;
 const SelfRole = require('./models/selfRole').default(sequelize) as ModelCtor<Model<any, any>>;
 
@@ -36,6 +39,7 @@ const client = new Client({
     try {
         // set client.commands
         commandsHandler(client);
+        modalSubmitHandler(client);
         console.log('Local commands cached successfully...')
     } catch (error) {
         console.error('Unable to load local commands:', error);

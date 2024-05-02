@@ -27,7 +27,8 @@ const memberDelete: ICommand = {
                 where: {
                     name: name,
                     server_id: interaction.guildId
-                }
+                },
+                attributes: ['id']
             }) as any)?.id
 
             if(!id){

@@ -6,21 +6,22 @@ function LoreInit(sequelize: Sequelize.Sequelize){
     if(lore) return lore;
 
     lore = sequelize.define('lore',{
-        id: {
-            type: Sequelize.UUID,
-            defaultValue: Sequelize.UUIDV1,
+        title: {
+            type: Sequelize.STRING,
             primaryKey: true,
             allowNull: false
         },
-        titel: {
+        chapter: {
             type: Sequelize.STRING,
-            allowNull: false
+            primaryKey: true
+        },
+        search_params: {
+            type: Sequelize.STRING
         },
         text: {
             type: Sequelize.TEXT,
             allowNull: false
-        },
-        search: Sequelize.STRING
+        }
     }, {underscored: true});
 
     return lore;

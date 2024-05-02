@@ -4,6 +4,7 @@ import ExtractName from "../../utils/extractName";
 import { Member } from "../../models/member";
 import { Guild } from "../../models/guild";
 import { GuildInfo } from "../../models/guildInfo";
+import { IntToPower } from "../../utils/powerConversions";
 
 const guildStats: ICommand = {
     data: new SlashCommandBuilder()
@@ -28,6 +29,7 @@ const guildStats: ICommand = {
         const name = interaction.options.getString('name');
         const days = interaction.options.getNumber('days');
         let guildId;
+        
         try {
             if(!name){
                 const nickname = (interaction.member as GuildMember).nickname
@@ -74,9 +76,9 @@ const guildStats: ICommand = {
                 order: [
                     ['created_at','ASC']
                 ]
-            })
+            }) || []
             
-            if(!infos){
+            if(!infos.length){
                 interaction.reply({
                     content: 'No stats found',
                     ephemeral: true
@@ -101,10 +103,10 @@ const guildStats: ICommand = {
                 content: 
                 `
                 ${guildName}:
-                Total: ${requestedValues.total}
-                Durchsschnitt: ${requestedValues.mean}
-                Kick: <${requestedValues.kick}
-                Bereinigtes Total: ${requestedValues.adjusted_total}
+                Total: ${IntToPower(requestedValues.total)}
+                Durchsschnitt: ${IntToPower(requestedValues.mean)}
+                Kick: <${IntToPower(requestedValues.kick)}
+                Bereinigtes Total: ${IntToPower(requestedValues.adjusted_total)}
                 `,
                 ephemeral: true
             })

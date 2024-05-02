@@ -51,7 +51,7 @@ const memberEntry: ICommand = {
             })
     
             interaction.reply({
-                content: 'Successfully creaated entry',
+                content: 'Successfully created entry',
                 ephemeral: true
             })
         } catch (error) {
