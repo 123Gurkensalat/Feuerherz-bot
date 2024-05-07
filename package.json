@@ -2,7 +2,7 @@
   "name": "feuerherz-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "nodemon",

@@ -7,8 +7,10 @@ import { IModalSubmit } from "../ts/interfaces/IModalSubmit";
 function modalSubmitHandler(client: IClient, exceptions: string[] = []){
     try {
         client.modalSubmits = new Collection();
+        
+        const dirname = __dirname.endsWith('\\dist')? path.join(__dirname, '..', 'src', 'handlers'): __dirname; 
 
-        const modalCategories = getAllFiles(path.join(__dirname, '..', 'modalSubmits'), true);
+        const modalCategories = getAllFiles(path.join(dirname, '..', 'modalSubmits'), true);
 
         // go through every file
         for (const modalCategory of modalCategories) {

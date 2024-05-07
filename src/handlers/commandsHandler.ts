@@ -7,7 +7,7 @@ import { Collection } from "discord.js";
 function commandsHandler(client: IClient, exceptions: string[] = []){
     try {
         client.commands = new Collection();
-
+        
         const commandCategories = getAllFiles(path.join(__dirname, '..', 'commands'), true);
 
         // go through every file

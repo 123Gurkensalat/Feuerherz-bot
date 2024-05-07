@@ -1,0 +1,71 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
+const options_1 = require("../../models/options");
+const selfRole_1 = require("../../models/selfRole");
+const selfRoleAdd = {
+    name: discord_js_1.Events.MessageReactionAdd,
+    once: false,
+    async execute(reaction, user) {
+        // fetch data if partial
+        if (reaction.partial) {
+            try {
+                await reaction.fetch();
+            }
+            catch (error) {
+                console.error('Something went wrong when fetching the message:', error);
+                return;
+            }
+        }
+        // get guild and channel from cache
+        const guildId = reaction.message.guildId;
+        let channelId, enabled;
+        // get channel from db
+        try {
+            const res = await (0, options_1.Option)()?.findOne({
+                where: {
+                    server_id: guildId
+                }
+            });
+            channelId = res.self_role_channel;
+            enabled = res.self_role_enabled;
+        }
+        catch (error) {
+            console.error(error);
+            return;
+        }
+        // only self_role_channel allowed
+        if (reaction.message.channelId !== channelId || !enabled)
+            return;
+        // get emoji
+        const emoji = reaction.emoji.toString();
+        // get roleId
+        try {
+            const entries = await (0, selfRole_1.SelfRole)()?.findAll({
+                where: {
+                    guild: guildId,
+                    emoji: emoji
+                }
+            });
+            if (!entries)
+                return;
+            for (const entry of entries) {
+                await reaction.message.guild?.members.addRole({
+                    role: entry.role,
+                    user: user.id
+                });
+            }
+        }
+        catch (error) {
+            // handle DiscordApiError: not enough permissions
+            if (error.code === 50013) {
+                reaction.message.reply({
+                    content: 'Bot permissions are insufficient'
+                });
+                return;
+            }
+            console.error(error);
+        }
+    }
+};
+exports.default = selfRoleAdd;
