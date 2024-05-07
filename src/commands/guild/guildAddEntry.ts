@@ -1,4 +1,4 @@
-import { AttachmentBuilder, PermissionFlagsBits, SlashCommandAttachmentOption, SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandAttachmentOption, SlashCommandBuilder } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
 import Canvas from "@napi-rs/canvas";
 import { ocrSpace } from "ocr-space-api-wrapper";
@@ -123,7 +123,7 @@ const guildAddEntry: ICommand = {
             // save results in members object
             const text = texts.join('\n');
             const memberRegEx = new RegExp(`(${memberNames.join('|')})\n.*(\\d|,)+k+`, 'gi'); // Form: <Name>\nXXXXk
-            console.log(text);
+            
             text.match(memberRegEx)?.forEach(element => {
                 let [name, power]: string[] | undefined[] = element.split('\n');
                 power = power.match(/(\d|,)+k+/gi)?.at(0);
@@ -165,9 +165,15 @@ const guildAddEntry: ICommand = {
         for (const member of members) {
             total += member.power; 
         }
+        
         const mean = total / members.length; 
+        
         const kick = mean / 2;
-        const adjusted_total = 0;
+
+        let adjusted_total = 0;
+        for (const member of members){
+            adjusted_total += member.power > kick? member.power : 0;
+        }
 
         // save in db
         try {

@@ -86,7 +86,7 @@ const memberStats: ICommand = {
                 ]
             })
 
-            if(!infos){
+            if(!infos?.length){
                 interaction.reply({
                     content: 'No stats found',
                     ephemeral: true

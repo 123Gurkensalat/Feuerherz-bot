@@ -2,6 +2,8 @@ import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder }
 import { ICommand } from "../../ts/interfaces/ICommand";
 import { Option } from "../../models/options";
 import { SelfRole } from "../../models/selfRole";
+import { Member } from "../../models/member";
+import { Guild } from "../../models/guild";
 
 const view: ICommand = {
     data: new SlashCommandBuilder()
@@ -11,8 +13,10 @@ const view: ICommand = {
             .setName('table')
             .setDescription('Table to show')
             .addChoices(
-                {name: 'options', value: 'guild', name_localizations: {de: 'Einstellungen'}},
-                {name: 'self-role', value: 'self_role'})
+                {name: 'options', value: 'options', name_localizations: {de: 'Einstellungen'}},
+                {name: 'self-role', value: 'self_role'},
+                {name: 'members', value: 'members'},
+                {name: 'guilds', value: 'guilds'})
             .setRequired(true))
         .setDescriptionLocalizations({
             de: 'Zeigt Datentabelle an'})
@@ -21,15 +25,20 @@ const view: ICommand = {
         .setDMPermission(false)
     ,
     execute(interaction){
-        const guildId = interaction.guildId;
         const table = interaction.options.getString('table');
 
         switch (table) {
-            case 'guild':
-                viewGuild(interaction);
+            case 'options':
+                viewOptions(interaction);
                 break;
             case 'self_role':
                 viewSelfRole(interaction);
+                break;
+            case 'members':
+                viewMembers(interaction);
+                break;
+            case 'guilds': 
+                viewGuilds(interaction);
                 break;
             default:
                 interaction.reply({
@@ -41,7 +50,7 @@ const view: ICommand = {
     }
 }
 
-async function viewGuild(interaction: ChatInputCommandInteraction){
+async function viewOptions(interaction: ChatInputCommandInteraction){
     try {
         const entry: any = await Option()?.findOne({
             where: {
@@ -88,6 +97,63 @@ async function viewSelfRole(interaction: ChatInputCommandInteraction) {
         const content = entries?.map(entry => `${entry.emoji} => ${roles?.get(entry.role)?.name}`).join('\n');
         
         interaction.reply({content, ephemeral: true});
+    } catch (error) {
+        console.log(error);
+
+        interaction.reply({
+            content: 'Internal server error',
+            ephemeral: true
+        });
+    }
+}
+
+async function viewMembers(interaction: ChatInputCommandInteraction) {
+    try {
+        const fromServer = {where: {
+            server_id: interaction.guildId
+        }}
+        const members = await Member()?.findAll(fromServer) as any[];
+
+        const guilds = await Guild()?.findAll(fromServer) as any[];
+
+        members.sort((a, b) => {
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+        });
+
+        members.forEach((el: any) => {
+            el.guild = guilds.find(guild => guild.id === el.guild_id)?.name;
+        });
+        
+        const text = members.map(el => `${el.name}: ${el.guild? el.guild: 'no guild'}`).join('\n');
+
+        interaction.reply({
+            content: text,
+            ephemeral: true
+        });
+    } catch (error) {
+        console.log(error);
+
+        interaction.reply({
+            content: 'Internal server error',
+            ephemeral: true
+        });
+    }
+}
+
+async function viewGuilds(interaction: ChatInputCommandInteraction){
+    try {
+        const guilds = await Guild()?.findAll({
+            where: {
+                server_id: interaction.guildId
+            }
+        })
+
+        interaction.reply({
+            content: guilds?.map((el: any) => el.name).join(', '),
+            ephemeral: true
+        })
     } catch (error) {
         console.log(error);
 

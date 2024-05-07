@@ -1,4 +1,4 @@
-import { GuildMember, SlashCommandBuilder } from "discord.js";
+import { GuildMember, PermissionFlagsBits, PermissionsBitField, SlashCommandBuilder } from "discord.js";
 import { ICommand } from "../../ts/interfaces/ICommand";
 import ExtractName from "../../utils/extractName";
 import { Member } from "../../models/member";
@@ -69,6 +69,14 @@ const guildStats: ICommand = {
                 }) as any)?.id
             }
 
+            if(!guildId){
+                interaction.reply({
+                    content: 'No guild found',
+                    ephemeral: true
+                })
+                return;
+            }
+
             const infos = await GuildInfo()?.findAll({
                 where: {
                     guild_id: guildId
@@ -99,13 +107,17 @@ const guildStats: ICommand = {
             }
 
             // reply
+
+            // sometimes typescript is really ugly...
+            let isAdmin = (interaction.member?.permissions as Readonly<PermissionsBitField>).has(PermissionsBitField.Flags.Administrator);
+            
             interaction.reply({
                 content: 
                 `
                 ${guildName}:
                 Total: ${IntToPower(requestedValues.total)}
                 Durchsschnitt: ${IntToPower(requestedValues.mean)}
-                Kick: <${IntToPower(requestedValues.kick)}
+                ${isAdmin?`Kick: <${IntToPower(requestedValues.kick)}` : ''}
                 Bereinigtes Total: ${IntToPower(requestedValues.adjusted_total)}
                 `,
                 ephemeral: true
