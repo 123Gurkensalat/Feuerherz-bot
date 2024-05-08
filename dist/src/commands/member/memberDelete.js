@@ -47,7 +47,7 @@ const memberDelete = {
                 }
             });
             interaction.reply({
-                content: `Successfully added ${name}`,
+                content: `Successfully deleted ${name}`,
                 ephemeral: true
             });
         }
