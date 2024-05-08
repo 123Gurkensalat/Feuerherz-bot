@@ -45,7 +45,7 @@ const selfRoleRemove: IEvent = {
         try {
             const entries: any[] | undefined = await SelfRole()?.findAll({
                 where: {
-                    guild: guildId,
+                    server_id: guildId,
                     emoji: emoji
                 }
             })

@@ -43,7 +43,7 @@ const selfRoleAdd = {
         try {
             const entries = await (0, selfRole_1.SelfRole)()?.findAll({
                 where: {
-                    guild: guildId,
+                    server_id: guildId,
                     emoji: emoji
                 }
             });
