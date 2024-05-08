@@ -33,7 +33,7 @@ const selfRoleDelete = {
         const role = interaction.options.getRole('role');
         try {
             const where = {
-                guild: guildId,
+                server_id: guildId,
                 emoji: emoji,
             };
             if (role) {
