@@ -86,7 +86,7 @@ async function viewSelfRole(interaction: ChatInputCommandInteraction) {
     try {
         const entries: any[] | undefined = await SelfRole()?.findAll({
             where: {
-                guild: interaction.guildId
+                server_id: interaction.guildId
             }
         });
 

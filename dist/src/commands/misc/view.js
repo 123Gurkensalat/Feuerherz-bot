@@ -76,7 +76,7 @@ async function viewSelfRole(interaction) {
     try {
         const entries = await (0, selfRole_1.SelfRole)()?.findAll({
             where: {
-                guild: interaction.guildId
+                server_id: interaction.guildId
             }
         });
         if (!entries?.length) {
