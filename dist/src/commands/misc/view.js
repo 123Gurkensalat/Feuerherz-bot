@@ -51,7 +51,7 @@ async function viewOptions(interaction) {
             }
         });
         const channel = await interaction.guild?.channels.fetch(entry.self_role_channel);
-        interaction.reply({
+        await interaction.reply({
             content: `self-role is ${entry?.self_role_enabled ? 'activated' : 'deactivated'}\nself-role-channel: ${channel?.name}`,
             ephemeral: true
         });
@@ -80,7 +80,7 @@ async function viewSelfRole(interaction) {
         }
         const roles = await interaction.guild?.roles.fetch();
         const content = entries?.map(entry => `${entry.emoji} => ${roles?.get(entry.role)?.name}`).join('\n');
-        interaction.reply({ content, ephemeral: true });
+        await interaction.reply({ content, ephemeral: true });
     }
     catch (error) {
         console.log(error);
@@ -108,7 +108,7 @@ async function viewMembers(interaction) {
             el.guild = guilds.find(guild => guild.id === el.guild_id)?.name;
         });
         const text = members.map(el => `${el.name}: ${el.guild ? el.guild : 'no guild'}`).join('\n');
-        interaction.reply({
+        await interaction.reply({
             content: text,
             ephemeral: true
         });
@@ -128,7 +128,7 @@ async function viewGuilds(interaction) {
                 server_id: interaction.guildId
             }
         });
-        interaction.reply({
+        await interaction.reply({
             content: guilds?.map((el) => el.name).join(', '),
             ephemeral: true
         });
