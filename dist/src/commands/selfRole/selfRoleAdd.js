@@ -34,7 +34,7 @@ const selfRoleAdd = {
         const role = interaction.options.getRole('role');
         try {
             await (0, selfRole_1.SelfRole)()?.create({
-                guild: guildId,
+                server_id: guildId,
                 emoji: emoji,
                 role: role?.id
             });

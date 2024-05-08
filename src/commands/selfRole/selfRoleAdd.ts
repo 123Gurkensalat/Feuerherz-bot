@@ -36,7 +36,7 @@ const selfRoleAdd: ICommand = {
 
         try {
             await SelfRole()?.create({
-                guild: guildId,
+                server_id: guildId,
                 emoji: emoji,
                 role: role?.id
             })

@@ -35,7 +35,7 @@ const selfRoleDelete: ICommand = {
 
         try {     
             const where: any = {
-                guild: guildId,
+                server_id: guildId,
                 emoji: emoji,
             }
 
