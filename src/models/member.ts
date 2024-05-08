@@ -17,7 +17,6 @@ function MemberInit(sequelize: Sequelize.Sequelize){
         guild_id: Sequelize.UUID,
         name: {
             type: Sequelize.STRING,
-            primaryKey: true,
             allowNull: false
         }
     }, {underscored: true});
