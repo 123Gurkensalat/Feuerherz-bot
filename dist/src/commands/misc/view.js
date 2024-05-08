@@ -47,7 +47,7 @@ async function viewOptions(interaction) {
     try {
         const entry = await (0, options_1.Option)()?.findOne({
             where: {
-                id: interaction.guildId
+                server_id: interaction.guildId
             }
         });
         const channel = await interaction.guild?.channels.fetch(entry.self_role_channel);

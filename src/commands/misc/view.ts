@@ -54,7 +54,7 @@ async function viewOptions(interaction: ChatInputCommandInteraction){
     try {
         const entry: any = await Option()?.findOne({
             where: {
-                id: interaction.guildId
+                server_id: interaction.guildId
             }
         });
     
