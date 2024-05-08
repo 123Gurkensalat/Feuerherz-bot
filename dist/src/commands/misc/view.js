@@ -124,7 +124,7 @@ async function viewMembers(interaction) {
             el.guild = guilds.find(guild => guild.id === el.guild_id)?.name;
         });
 
-        if(!members){
+        if(!members?.length){
             interaction.reply({
                 content: 'No entries found',
                 ephemeral: true
@@ -154,7 +154,7 @@ async function viewGuilds(interaction) {
                 server_id: interaction.guildId
             }
         });
-        if(!guilds){
+        if(!guilds?.length){
             interaction.reply({
                 content: 'No entries found',
                 ephemeral: true

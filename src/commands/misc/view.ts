@@ -139,7 +139,7 @@ async function viewMembers(interaction: ChatInputCommandInteraction) {
         members.forEach((el: any) => {
             el.guild = guilds.find(guild => guild.id === el.guild_id)?.name;
         });
-        if(!members){
+        if(!members?.length){
             interaction.reply({
                 content: 'No entries found',
                 ephemeral: true
@@ -170,7 +170,7 @@ async function viewGuilds(interaction: ChatInputCommandInteraction){
                 server_id: interaction.guildId
             }
         })
-        if(!guilds){
+        if(!guilds?.length){
             interaction.reply({
                 content: 'No entries found',
                 ephemeral: true
